@@ -108,7 +108,7 @@ export default function Dashboard() {
       <Header />
 
       <div className="content">
-        <Title name="ALOOOOO">
+        <Title name="Pedidos">
           <FiMessageSquare size={25} />
         </Title>
 
