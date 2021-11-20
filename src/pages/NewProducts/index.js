@@ -1,4 +1,4 @@
-import "./new.css";
+import "./newProducts.css";
 import Title from "../../components/Title";
 import Header from "../../components/Header";
 import { FiPlus } from "react-icons/fi";
@@ -8,7 +8,7 @@ import firebase from "../../services/firebaseConnection";
 import { toast } from "react-toastify";
 import { useHistory, useParams } from "react-router-dom";
 
-export default function New() {
+export default function NewProducts() {
   const [loadCustomers, setLoadCustomers] = useState(true);
   const [customers, setCustomers] = useState([]);
   const [customerSelected, setCustomerSelected] = useState(0);

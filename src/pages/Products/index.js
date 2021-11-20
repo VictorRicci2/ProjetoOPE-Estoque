@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
-import "./dashboard.css";
+import "./products.css";
 import Title from "../../components/Title";
 import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -11,11 +11,11 @@ import Modal from "../../components/Modal";
 
 const listRef = firebase
   .firestore()
-  .collection("chamados")
+  .collection("products")
   .orderBy("created", "desc");
 
-export default function Dashboard() {
-  const [chamados, setChamados] = useState([]);
+export default function Products() {
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [detail, setDetail] = useState();
 
   useEffect(() => {
-    async function loadChamados() {
+    async function loadProducts() {
       await listRef
         .limit(5)
         .get()
@@ -37,7 +37,7 @@ export default function Dashboard() {
         });
       setLoading(false);
     }
-    loadChamados();
+    loadProducts();
 
     return () => {};
   }, []);
@@ -63,7 +63,7 @@ export default function Dashboard() {
         });
       });
       const lastDoc = snapshot.docs[snapshot.docs.length - 1]; //PEGANDO ULTIMO DOCUMENTO REGISTRADO
-      setChamados((chamados) => [...chamados, ...lista]);
+      setProducts((products) => [...products, ...lista]);
       setLastDocs(lastDoc);
     } else {
       setIsEmpty(true);
@@ -96,7 +96,7 @@ export default function Dashboard() {
             <FiMessageSquare size={25} />
           </Title>
           <div className="container dashboard">
-            <span>Buscando chamados...</span>
+            <span>Buscando produtos...</span>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function Dashboard() {
           <FiMessageSquare size={25} />
         </Title>
 
-        {chamados.length === 0 ? (
+        {products.length === 0 ? (
           <div className="container dashboard">
             <span>Nenhum pedido registrado...</span>
             <Link to="/new" className="new">
@@ -138,7 +138,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {chamados.map((item, index) => {
+                {products.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td data-label="Cliente">{item.cliente}</td>

@@ -10,7 +10,7 @@ export default function Modal({ conteudo, close }) {
           Voltar
         </button>
         <div>
-          <h2>Detalhes do chamado</h2>
+          <h2>Detalhes do pedido</h2>
           <div className="row">
             <span>
               Cliente: <i>{conteudo.cliente}</i>
