@@ -36,7 +36,7 @@ export default function Customers() {
   return (
     <div>
       <div className="content">
-        <Title name="Fornecedores">
+        <Title name="Cadastrar Fornecedor">
           <FiUser size={25} />
         </Title>
 

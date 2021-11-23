@@ -22,7 +22,6 @@ const useStyles = makeStyles(styles);
 export default function Sidebar(props) {
   const classes = useStyles();
   let location = useLocation();
-  // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
     return location.pathname === routeName;
   }
@@ -111,7 +110,7 @@ export default function Sidebar(props) {
           }}
           onClose={props.handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
         >
           {brand}

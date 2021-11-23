@@ -32,7 +32,7 @@ const list = [
     icon: Dashboard,
   },
   {
-    path: "/register",
+    path: "/customers",
     name: "Fornecedores",
     icon: Dashboard,
   },
@@ -72,7 +72,6 @@ export default function Admin({ ...rest }) {
       setMobileOpen(false);
     }
   };
-  // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(mainPanel.current, {
@@ -82,7 +81,6 @@ export default function Admin({ ...rest }) {
       document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", resizeFunction);
-    // Specify how to clean up after this effect:
     return function cleanup() {
       if (navigator.platform.indexOf("Win") > -1) {
         ps.destroy();
@@ -95,7 +93,7 @@ export default function Admin({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={list}
-        logoText={"Creative Tim"}
+        logoText={"Estoque"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}
