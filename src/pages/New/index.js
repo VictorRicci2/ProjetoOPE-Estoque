@@ -1,6 +1,5 @@
 import "./new.css";
 import Title from "../../components/Title";
-import Header from "../../components/Header";
 import { FiPlus } from "react-icons/fi";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/userAuth";
@@ -143,7 +142,6 @@ export default function New() {
 
   return (
     <div>
-      <Header />
       <div className="content">
         <Title name="Novo pedido">
           <FiPlus size={25} />

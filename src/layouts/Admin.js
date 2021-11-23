@@ -26,6 +26,16 @@ const list = [
     name: "Dashboard",
     icon: Dashboard,
   },
+  {
+    path: "/produtos",
+    name: "Produtos",
+    icon: Dashboard,
+  },
+  {
+    path: "/register",
+    name: "Fornecedores",
+    icon: Dashboard,
+  },
 ];
 
 export default function Admin({ ...rest }) {

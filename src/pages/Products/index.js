@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Header from "../../components/Header";
 import "./products.css";
 import Title from "../../components/Title";
 import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
@@ -90,7 +89,6 @@ export default function Products() {
   if (loading) {
     return (
       <div>
-        <Header />
         <div className="content">
           <Title name="Pedidos">
             <FiMessageSquare size={25} />
@@ -105,8 +103,6 @@ export default function Products() {
 
   return (
     <div>
-      <Header />
-
       <div className="content">
         <Title name="Pedidos">
           <FiMessageSquare size={25} />
