@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react";
+import ProductsModel from "../../models/products/products.js";
 import "./products.css";
 import Title from "../../components/Title";
 import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import firebase from "../../services/firebaseConnection";
-import { toast } from "react-toastify";
-import { format } from "date-fns";
 import Modal from "../../components/Modal";
-
-const listRef = firebase
-  .firestore()
-  .collection("products")
-  .orderBy("created", "desc");
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -23,62 +16,33 @@ export default function Products() {
   const [detail, setDetail] = useState();
 
   useEffect(() => {
-    async function loadProducts() {
-      await listRef
-        .limit(5)
-        .get()
-        .then((snapshot) => {
-          updateState(snapshot);
-        })
-        .catch((error) => {
-          toast.error("Ops, deu algum erro.");
-          setLoadingMore(false);
-        });
-      setLoading(false);
+    async function ProductsList(){
+      const data = await ProductsModel()
+      updateState(data)
     }
-    loadProducts();
-
-    return () => {};
+    ProductsList()
   }, []);
 
   async function updateState(snapshot) {
-    const isCollectionEmpty = snapshot.size === 0;
+    console.log("ashuehasuehs", snapshot)
+    const isCollectionEmpty = snapshot.length === 0;
 
     if (!isCollectionEmpty) {
       let lista = [];
       snapshot.forEach((doc) => {
         lista.push({
           id: doc.id,
-          assunto: doc.data().assunto,
-          cliente: doc.data().cliente,
-          clienteId: doc.data.clienteId,
-          created: doc.data().created,
-          createdFormatedData: format(
-            doc.data().created.toDate(),
-            "dd/MM/yyyy"
-          ),
-          status: doc.data().status,
-          complemento: doc.data().complemento,
+          description: doc.description,
+          manufacturer: doc.manufacturer,
+          quantity: doc.quantity,
+          name: doc.name,
         });
       });
-      const lastDoc = snapshot.docs[snapshot.docs.length - 1]; //PEGANDO ULTIMO DOCUMENTO REGISTRADO
       setProducts((products) => [...products, ...lista]);
-      setLastDocs(lastDoc);
     } else {
       setIsEmpty(true);
     }
-    setLoadingMore(false);
-  }
-
-  async function handleMore() {
-    setLoadingMore(true);
-    await listRef
-      .startAfter(lastDocs)
-      .limit(5)
-      .get()
-      .then((snapshot) => {
-        updateState(snapshot);
-      });
+    setLoading(false);
   }
 
   function togglePostModal(item) {
@@ -135,23 +99,21 @@ export default function Products() {
               </thead>
               <tbody>
                 {products.map((item, index) => {
+                  console.log("ITEMASDM", item)
                   return (
                     <tr key={index}>
-                      <td data-label="Cliente">{item.cliente}</td>
-                      <td data-label="Assunto">{item.assunto}</td>
+                      <td data-label="Cliente">{item.name}</td>
+                      <td data-label="Descrição">{item.description}</td>
                       <td data-label="Status">
                         <span
                           className="badge"
                           style={{
                             backgroundColor:
-                              item.status === "Aberto" ? "#5cb85c" : "#999",
+                              item.manufacturer === "Aberto" ? "#5cb85c" : "#999",
                           }}
                         >
-                          {item.status}
+                          {item.manufacturer}
                         </span>
-                      </td>
-                      <td data-label="Cadastrado">
-                        {item.createdFormatedData}
                       </td>
                       <td data-label="#">
                         <button
@@ -178,11 +140,6 @@ export default function Products() {
               <h3 style={{ textAlign: "center", marginTop: 15 }}>
                 Buscando pedidos...
               </h3>
-            )}
-            {!loadingMore && !isEmpty && (
-              <button className="btn-more" onClick={handleMore}>
-                Buscar mais
-              </button>
             )}
           </>
         )}
