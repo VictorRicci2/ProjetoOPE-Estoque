@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import ProductsModel from "../../models/products/products.js";
-import "./products.css";
+import ExitProductsModel from "../../models/exitProducts/exitProducts.js";
+import "./exitProducts.css";
 import Title from "../../components/Title";
-import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
+import { FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
 
-export default function Products() {
-  const [products, setProducts] = useState([]);
+export default function ExitProducts() {
+  const [exitProducts, setExitProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -15,11 +15,11 @@ export default function Products() {
   const [detail, setDetail] = useState();
 
   useEffect(() => {
-    async function ProductsList(){
-      const data = await ProductsModel()
+    async function ExitProductsList(){
+      const data = await ExitProductsModel()
       updateState(data)
     }
-    ProductsList()
+    ExitProductsList()
   }, []);
 
   async function updateState(snapshot) {
@@ -30,19 +30,16 @@ export default function Products() {
       snapshot.forEach((doc) => {
         lista.push({
           id: doc.id,
-          description: doc.description,
-          manufacturer: doc.manufacturer,
-          quantity: doc.quantity,
-          name: doc.name,
+          productId: doc.productId,
+          quantity: doc.exitData,
         });
       });
-      setProducts((products) => [...products, ...lista]);
+      setExitProducts((exitProducts) => [...exitProducts, ...lista]);
     } else {
       setIsEmpty(true);
     }
     setLoading(false);
     setLoadingMore(false)
-
   }
 
   function togglePostModal(item) {
@@ -68,25 +65,16 @@ export default function Products() {
   return (
     <div>
       <div className="content">
-        <Title name="Lista de Produtos">
+        <Title name="Produtos">
           <FiMessageSquare size={25} />
         </Title>
 
-        {products.length === 0 ? (
+        {exitProducts.length === 0 ? (
           <div className="container dashboard">
-            <span>Nenhum produto registrado...</span>
-            <Link to="/new" className="new">
-              <FiPlus size={25} color="white" />
-              Novo produto
-            </Link>
+            <span>Nenhum produto registrado...</span> 
           </div>
         ) : (
           <>
-            <Link to="/new" className="new">
-              <FiPlus size={25} color="white" />
-              Novo produto
-            </Link>
-
             <table>
               <thead>
                 <tr>
@@ -97,21 +85,20 @@ export default function Products() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((item, index) => {
-                  console.log("ITEMASDM", item)
+                {exitProducts.map((item, index) => {
                   return (
                     <tr key={index}>
-                      <td data-label="Produto">{item.name}</td>
+                      <td data-label="Produto">{item.productId}</td>
                       <td data-label="Descrição">{item.description}</td>
-                      <td data-label="Quantidade">{item.quantity}
+                      <td data-label="Quantidade">{item.exitData}
                         <span
                           className="badge"
                           style={{
                             backgroundColor:
-                              item.quantity === "#000"
+                              item.exitData === "#999",
                           }}
                         >
-                          {item.quantity}
+                          {item.exitData}
                         </span>
                       </td>
                       <td data-label="#">
@@ -137,7 +124,7 @@ export default function Products() {
             </table>
             {loadingMore && (
               <h3 style={{ textAlign: "center", marginTop: 15 }}>
-                Buscando produtos...               
+                Buscando produtos...
               </h3>
             )}
           </>

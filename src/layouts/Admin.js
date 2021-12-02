@@ -8,13 +8,12 @@ import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
-
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 import Routes from "routes";
-import Dashboard from "@material-ui/icons/Dashboard";
+import { Dashboard, ViewList, AssignmentInd } from "@material-ui/icons";
+
 
 let ps;
 
@@ -27,14 +26,19 @@ const list = [
     icon: Dashboard,
   },
   {
-    path: "/produtos",
+    path: "/listaprodutos",
     name: "Produtos",
-    icon: Dashboard,
+    icon: ViewList,
+  },
+  {
+    path: "/listasaidadeprodutos",
+    name: "Saída de produtos",
+    icon: ViewList,
   },
   {
     path: "/customers",
     name: "Fornecedores",
-    icon: Dashboard,
+    icon: AssignmentInd,
   },
 ];
 
