@@ -50,11 +50,11 @@ export default function Dashboard() {
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <Icon>content_copy</Icon>
+                <Icon>Total Estoque</Icon>
               </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
+              <br/>
               <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
+                49/150 <small>produtos</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -62,9 +62,10 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  Get more space
-                </a>
+                <div className={classes.stats}>
+                  <DateRange />
+                  Últimas 24 Horas
+                </div>
               </div>
             </CardFooter>
           </Card>
@@ -109,13 +110,13 @@ export default function Dashboard() {
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
+              <p className={classes.cardCategory}>Fornecedores</p>
+              <h3 className={classes.cardTitle}>45</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <Update />
-                Just Updated
+                Total Cadastrados
               </div>
             </CardFooter>
           </Card>

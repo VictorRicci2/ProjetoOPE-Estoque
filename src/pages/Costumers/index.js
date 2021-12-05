@@ -1,13 +1,11 @@
 import "./customers.css";
 import Title from "../../components/Title";
 import Modal from "../../components/Modal";
-import ProvidersModel from "../../models/providers/providers";
 import {
-  FiUser,
-  FiEdit2,
-  FiMessageSquare,
-  FiSearch,
-} from "react-icons/fi";
+  getAllProviders,
+  registerProviders,
+} from "../../models/providers/providers";
+import { FiUser, FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -24,7 +22,7 @@ export default function Customers() {
 
   useEffect(() => {
     async function ProvidersList() {
-      const data = await ProvidersModel();
+      const data = await getAllProviders();
       updateState(data);
     }
     ProvidersList();
@@ -51,6 +49,12 @@ export default function Customers() {
     setLoadingMore(false);
   }
 
+  async function Providers(event) {
+    event.preventDefault()
+    setLoading(true)
+    return registerProviders(nomeFornecedor, email, telefone);
+  }
+
   function togglePostModal(item) {
     setShowPostModal(!showPostModal); // se esta true ele vai negar e vai mudar pra false (!)
     setDetail(item);
@@ -64,7 +68,7 @@ export default function Customers() {
         </Title>
 
         <div className="container">
-          <form className="form-profile customers" onSubmit={updateState}>
+          <form className="form-profile customers">
             <label>Nome</label>
             <input
               type="text"
@@ -86,7 +90,7 @@ export default function Customers() {
               placeholder="Telefone do fornecedor"
               onChange={(e) => setTelefone(e.target.value)}
             />
-            <button type="submit">Cadastrar</button>
+            <button type="submit" onClick={(event) => Providers(event)}>Cadastrar</button>
           </form>
         </div>
       </div>
@@ -98,7 +102,7 @@ export default function Customers() {
 
           {providers.length === 0 ? (
             <div className="container dashboard">
-              <span>Nenhum fornecedor registrado...</span>
+              <span>Buscando fornecedores...</span>
             </div>
           ) : (
             <>
@@ -113,7 +117,6 @@ export default function Customers() {
                 </thead>
                 <tbody>
                   {providers.map((item, index) => {
-                    console.log("ITEMASDM", item);
                     return (
                       <tr key={index}>
                         <td data-label="Nome">{item.name}</td>
