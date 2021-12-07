@@ -1,13 +1,30 @@
-import { useState, useEffect } from "react";
-import ProductsModel from "../../models/products/products.js";
+import { useState, useEffect, useContext } from "react";
+import {
+  getAllProducts,
+  registerProducts,
+} from "../../models/products/products.js";
+import { getAllProviders } from "../../models/providers/providers";
 import "./products.css";
 import Title from "../../components/Title";
 import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
+import { AuthContext } from "../../contexts/userAuth";
+import { toast } from "react-toastify";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [produtos, setProdutos] = useState("");
+  const [quantidade, setQuantidade] = useState(0);
+  const [status, setStatus] = useState("Aberto");
+  const [providerSelected, setProviderSelected] = useState(0);
+  const [loadProviders, setLoadProviders] = useState(true);
+  const [providers, setProviders] = useState([]);
+  const [descricao, setDescricao] = useState("");
+  const [idCustomer, setIdCustomer] = useState(false);
+  const { user } = useContext(AuthContext);
+  const { id } = useParams();
+  const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -15,11 +32,11 @@ export default function Products() {
   const [detail, setDetail] = useState();
 
   useEffect(() => {
-    async function ProductsList(){
-      const data = await ProductsModel()
-      updateState(data)
+    async function ProductsList() {
+      const data = await getAllProducts();
+      updateState(data);
     }
-    ProductsList()
+    ProductsList();
   }, []);
 
   async function updateState(snapshot) {
@@ -34,6 +51,7 @@ export default function Products() {
           manufacturer: doc.manufacturer,
           quantity: doc.quantity,
           name: doc.name,
+          validationDate: doc.validationDate,
         });
       });
       setProducts((products) => [...products, ...lista]);
@@ -41,8 +59,55 @@ export default function Products() {
       setIsEmpty(true);
     }
     setLoading(false);
-    setLoadingMore(false)
+    setLoadingMore(false);
+  }
 
+  async function handleRegister(e) {
+    // e.preventDefault();
+    // if (idCustomer) {
+    //   await firebase
+    //     .firestore()
+    //     .collection("chamados")
+    //     .doc(id)
+    //     .update({
+    //       cliente: customers[customerSelected].nomeFornecedor,
+    //       clienteId: customers[customerSelected].id,
+    //       assunto: assunto,
+    //       status: status,
+    //       complemento: complemento,
+    //       userId: user.uid,
+    //     })
+    //     .then(() => {
+    //       toast.success("Pedido editado com sucesso!");
+    //       setCustomerSelected(0);
+    //       setComplemento("");
+    //       history.push("/dashboard");
+    //     })
+    //     .catch((error) => {
+    //       toast.error("Ops, erro ao registrar.");
+    //     });
+    //   return;
+    // }
+    // await firebase
+    //   .firestore()
+    //   .collection("chamados")
+    //   .add({
+    //     created: new Date(),
+    //     cliente: customers[customerSelected].nomeFornecedor,
+    //     clienteId: customers[customerSelected].id,
+    //     assunto: assunto,
+    //     status: status,
+    //     complemento: complemento,
+    //     userId: user.uid,
+    //   })
+    //   .then(() => {
+    //     toast.success("Pedido registrado com sucesso!");
+    //     setComplemento("");
+    //     setCustomerSelected(0);
+    //   })
+    //   .catch((error) => {
+    //     toast.error("Ops, erro ao registrar, tente novamente.");
+    //   });
   }
 
   function togglePostModal(item) {
@@ -50,23 +115,100 @@ export default function Products() {
     setDetail(item);
   }
 
-  if (loading) {
-    return (
-      <div>
-        <div className="content">
-          <Title name="Produtos">
-            <FiMessageSquare size={25} />
-          </Title>
-          <div className="container dashboard">
-            <span>Buscando produtos...</span>
-          </div>
-        </div>
-      </div>
-    );
+  //CHAMA QUANDO TROCA O ASSUNTO
+  function handleChangeSelect(e) {
+    setProdutos(e.target.value);
+  }
+
+  function handleChangeQuantity(e) {
+    setQuantidade(e.target.value);
+  }
+
+  // CHAMA QUANDO TROCA O STATUS
+  function handleOptionChange(e) {
+    setStatus(e.target.value);
+  }
+  //CHAMA QUANDO TROCA DE FORNECEDOR
+  function handleChangeProviders(e) {
+    getAllProviders();
+    setProviderSelected(e.target.value);
   }
 
   return (
     <div>
+      <div className="content">
+        <Title name="Novo produto">
+          <FiPlus size={25} />
+        </Title>
+
+        <div className="container">
+          <form className="form-profile" onSubmit={handleRegister}>
+            <label>Fornecedor</label>
+            {loadProviders ? (
+              <input
+                type="text"
+                disabled={true}
+                value="Carregando fornecedores..."
+              />
+            ) : (
+              <select value={providerSelected} onChange={handleChangeProviders}>
+                {providers.map((item, index) => {
+                  return (
+                    <option key={item.id} value={index}>
+                      {item.nomeFornecedor}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+            {/* <div>
+              <input type="text" value={produtos} onChange={handleChangeSelect}>
+                Produto
+              </input>
+            </div>
+            <div>
+              <input type="number" value={quantidade} onChange={handleChangeQuantity}>
+                Quantidade
+              </input>
+            </div> */}
+            <label>Status</label>
+            <div className="status">
+              <input
+                type="radio"
+                name="radio"
+                value="Aberto"
+                onChange={handleOptionChange}
+                checked={status === "Aberto"}
+              />
+              <span>Em Aberto</span>
+              <input
+                type="radio"
+                name="radio"
+                value="Progresso"
+                onChange={handleOptionChange}
+                checked={status === "Progresso"}
+              />
+              <span>Em Progresso</span>
+              <input
+                type="radio"
+                name="radio"
+                value="Atendido"
+                onChange={handleOptionChange}
+                checked={status === "Atendido"}
+              />
+              <span>Atendido</span>
+            </div>
+            <label>Descrição</label>
+            <textarea
+              type="text"
+              placeholder="Descreva seu problema (opcional)."
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+            <button type="submit">Registrar</button>
+          </form>
+        </div>
+      </div>
       <div className="content">
         <Title name="Lista de Produtos">
           <FiMessageSquare size={25} />
@@ -75,18 +217,9 @@ export default function Products() {
         {products.length === 0 ? (
           <div className="container dashboard">
             <span>Nenhum produto registrado...</span>
-            <Link to="/new" className="new">
-              <FiPlus size={25} color="white" />
-              Novo produto
-            </Link>
           </div>
         ) : (
           <>
-            <Link to="/new" className="new">
-              <FiPlus size={25} color="white" />
-              Novo produto
-            </Link>
-
             <table>
               <thead>
                 <tr>
@@ -98,17 +231,17 @@ export default function Products() {
               </thead>
               <tbody>
                 {products.map((item, index) => {
-                  console.log("ITEMASDM", item)
+                  console.log("ITEMASDM", item);
                   return (
                     <tr key={index}>
                       <td data-label="Produto">{item.name}</td>
                       <td data-label="Descrição">{item.description}</td>
-                      <td data-label="Quantidade">{item.quantity}
+                      <td data-label="Quantidade">
+                        {item.quantity}
                         <span
                           className="badge"
                           style={{
-                            backgroundColor:
-                              item.quantity === "#000"
+                            backgroundColor: item.quantity === "#000",
                           }}
                         >
                           {item.quantity}
@@ -137,7 +270,7 @@ export default function Products() {
             </table>
             {loadingMore && (
               <h3 style={{ textAlign: "center", marginTop: 15 }}>
-                Buscando produtos...               
+                Buscando produtos...
               </h3>
             )}
           </>

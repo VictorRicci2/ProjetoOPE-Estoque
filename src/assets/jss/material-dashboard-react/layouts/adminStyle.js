@@ -7,7 +7,7 @@ import {
 const appStyle = (theme) => ({
   wrapper: {
     position: "relative",
-    top: "0",
+    top: "7px",
     height: "100vh",
   },
   mainPanel: {

@@ -36,7 +36,7 @@ const list = [
     icon: ViewList,
   },
   {
-    path: "/customers",
+    path: "/fornecedores",
     name: "Fornecedores",
     icon: AssignmentInd,
   },

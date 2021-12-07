@@ -101,7 +101,7 @@ export default function Sidebar(props) {
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
+          anchor={props.rtlActive && "left" }
           open={props.open}
           classes={{
             paper: classNames(classes.drawerPaper, {
@@ -128,7 +128,7 @@ export default function Sidebar(props) {
       </Hidden>
       <Hidden smDown implementation="css">
         <Drawer
-          anchor={props.rtlActive ? "right" : "left"}
+          anchor={props.rtlActive && "left"}
           variant="permanent"
           open
           classes={{

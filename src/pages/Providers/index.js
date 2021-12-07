@@ -1,4 +1,4 @@
-import "./customers.css";
+import "./providers.css";
 import Title from "../../components/Title";
 import Modal from "../../components/Modal";
 import {
@@ -9,7 +9,7 @@ import { FiUser, FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Customers() {
+export default function Providers() {
   const [providers, setProviders] = useState([]);
   const [nomeFornecedor, setNomeFornecedor] = useState("");
   const [loading, setLoading] = useState(true);

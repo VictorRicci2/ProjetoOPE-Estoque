@@ -37,7 +37,7 @@ const sidebarStyle = (theme) => ({
       display: "block",
       top: "0",
       height: "100vh",
-      right: "0",
+      // right: "0",
       left: "auto",
       zIndex: "1032",
       visibility: "visible",
@@ -53,11 +53,11 @@ const sidebarStyle = (theme) => ({
   drawerPaperRTL: {
     [theme.breakpoints.up("md")]: {
       left: "auto !important",
-      right: "0 !important",
+      // right: "0 !important",
     },
     [theme.breakpoints.down("sm")]: {
       left: "0  !important",
-      right: "auto !important",
+      // right: "auto !important",
     },
   },
   logo: {
@@ -70,7 +70,7 @@ const sidebarStyle = (theme) => ({
       bottom: "0",
 
       height: "1px",
-      right: "15px",
+      // right: "15px",
       width: "calc(100% - 30px)",
       backgroundColor: "rgba(" + hexToRgb(grayColor[6]) + ", 0.3)",
     },
@@ -91,7 +91,7 @@ const sidebarStyle = (theme) => ({
     },
   },
   logoLinkRTL: {
-    textAlign: "right",
+    // textAlign: "right",
   },
   logoImage: {
     width: "30px",
@@ -170,7 +170,7 @@ const sidebarStyle = (theme) => ({
   itemIconRTL: {
     marginRight: "3px",
     marginLeft: "15px",
-    float: "right",
+    float: "left",
   },
   itemText: {
     ...defaultFont,
@@ -180,7 +180,7 @@ const sidebarStyle = (theme) => ({
     color: whiteColor,
   },
   itemTextRTL: {
-    textAlign: "right",
+    // textAlign: "right",
   },
   whiteFont: {
     color: whiteColor,
