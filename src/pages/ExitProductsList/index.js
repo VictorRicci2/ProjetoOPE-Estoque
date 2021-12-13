@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import ExitProductsModel from "../../models/exitProducts/exitProducts.js";
 import "./exitProducts.css";
 import Title from "../../components/Title";
-import { FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
+import { FiTrash2, FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
+import ModalExclusao from "../../components/ModalExclusao";
 
 export default function ExitProducts() {
   const [exitProducts, setExitProducts] = useState([]);
@@ -12,14 +13,16 @@ export default function ExitProducts() {
   const [loadingMore, setLoadingMore] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showPostModal, setShowPostModal] = useState(false);
+  const [showPostModalEx, setShowPostModalEx] = useState(false);
   const [detail, setDetail] = useState();
+  const [exclusao, setExclusao] = useState();
 
   useEffect(() => {
-    async function ExitProductsList(){
-      const data = await ExitProductsModel()
-      updateState(data)
+    async function ExitProductsList() {
+      const data = await ExitProductsModel();
+      updateState(data);
     }
-    ExitProductsList()
+    ExitProductsList();
   }, []);
 
   async function updateState(snapshot) {
@@ -30,8 +33,11 @@ export default function ExitProducts() {
       snapshot.forEach((doc) => {
         lista.push({
           id: doc.id,
-          productId: doc.productId,
-          quantity: doc.exitData,
+          manufacturer: doc.manufacturer,
+          productName: doc.productName,
+          description: doc.description,
+          quantity: doc.quantity,
+          exitData: doc.exitData,
         });
       });
       setExitProducts((exitProducts) => [...exitProducts, ...lista]);
@@ -39,12 +45,17 @@ export default function ExitProducts() {
       setIsEmpty(true);
     }
     setLoading(false);
-    setLoadingMore(false)
+    setLoadingMore(false);
   }
 
   function togglePostModal(item) {
     setShowPostModal(!showPostModal); // se esta true ele vai negar e vai mudar pra false (!)
     setDetail(item);
+  }
+
+  function togglePostModalEx(item) {
+    setShowPostModalEx(!showPostModalEx); // se esta true ele vai negar e vai mudar pra false (!)
+    setExclusao(item);
   }
 
   if (loading) {
@@ -71,16 +82,18 @@ export default function ExitProducts() {
 
         {exitProducts.length === 0 ? (
           <div className="container dashboard">
-            <span>Nenhum produto registrado...</span> 
+            <span>Nenhum produto registrado...</span>
           </div>
         ) : (
           <>
             <table>
               <thead>
                 <tr>
+                  <th scope="col">Fabricante</th>
                   <th scope="col">Produto</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Quantidade</th>
+                  <th scope="col">Data de saída</th>
                   <th scope="col">...</th>
                 </tr>
               </thead>
@@ -88,34 +101,43 @@ export default function ExitProducts() {
                 {exitProducts.map((item, index) => {
                   return (
                     <tr key={index}>
-                      <td data-label="Produto">{item.productId}</td>
-                      <td data-label="Descrição">{item.description}</td>
-                      <td data-label="Quantidade">{item.exitData}
+                      <td data-label="Fabricante">{item.manufacturer}</td>
+                      <td data-label="Produto">{item.productName}</td>
+                      <td data-label="Tipo">{item.description}</td>
+                      <td data-label="Quantidade">
+                        {item.quantity}
                         <span
                           className="badge"
                           style={{
-                            backgroundColor:
-                              item.exitData === "#999",
+                            backgroundColor: item.quantity === "#999",
                           }}
                         >
-                          {item.exitData}
+                          {item.quantity}
                         </span>
                       </td>
+                      <td data-label="Data de saída">{item.exitData}</td>
                       <td data-label="#">
                         <button
                           className="action"
-                          style={{ backgroundColor: "#3583f6" }}
+                          style={{ backgroundColor: "#3ECDDF" }}
                           onClick={() => togglePostModal(item)}
                         >
                           <FiSearch color="#fff" size={17} />
                         </button>
                         <Link
                           className="action"
-                          style={{ backgroundColor: "#f6a935" }}
+                          style={{ backgroundColor: "#A9A9A9" }}
                           to={`/new/${item.id}`}
                         >
                           <FiEdit2 color="#fff" size={17} />
                         </Link>
+                        <button
+                          className="action"
+                          style={{ backgroundColor: "#ff0000" }}
+                          onClick={() => togglePostModalEx(item)}
+                        >
+                          <FiTrash2 color="#fff" size={17} />
+                        </button>
                       </td>
                     </tr>
                   );
@@ -131,6 +153,9 @@ export default function ExitProducts() {
         )}
       </div>
       {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
+      {showPostModalEx && (
+        <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />
+      )}
     </div>
   );
 }

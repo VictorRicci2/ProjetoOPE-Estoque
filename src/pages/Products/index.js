@@ -6,22 +6,29 @@ import {
 import { getAllProviders } from "../../models/providers/providers";
 import "./products.css";
 import Title from "../../components/Title";
-import { FiEdit2, FiMessageSquare, FiPlus, FiSearch } from "react-icons/fi";
+import {
+  FiEdit2,
+  FiMessageSquare,
+  FiPlus,
+  FiSearch,
+  FiTrash2,
+} from "react-icons/fi";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
+import ModalExclusao from "../../components/ModalExclusao";
 import { AuthContext } from "../../contexts/userAuth";
 import { toast } from "react-toastify";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [fabricante, setFabricantes] = useState("");
   const [produtos, setProdutos] = useState("");
-  const [quantidade, setQuantidade] = useState(0);
-  const [status, setStatus] = useState("Aberto");
+  const [quantidade, setQuantidade] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [dataValidade, setDataValidade] = useState("");
   const [providerSelected, setProviderSelected] = useState(0);
   const [loadProviders, setLoadProviders] = useState(true);
   const [providers, setProviders] = useState([]);
-  const [descricao, setDescricao] = useState("");
-  const [idCustomer, setIdCustomer] = useState(false);
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const history = useHistory();
@@ -29,12 +36,17 @@ export default function Products() {
   const [loadingMore, setLoadingMore] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showPostModal, setShowPostModal] = useState(false);
+  const [showPostModalEx, setShowPostModalEx] = useState(false);
   const [detail, setDetail] = useState();
+  const [exclusao, setExclusao] = useState();
 
   useEffect(() => {
     async function ProductsList() {
       const data = await getAllProducts();
+      const dataProvider = await getAllProviders();
       updateState(data);
+      setProviders(dataProvider);
+      setLoadProviders(false);
     }
     ProductsList();
   }, []);
@@ -62,57 +74,27 @@ export default function Products() {
     setLoadingMore(false);
   }
 
-  async function handleRegister(e) {
-    // e.preventDefault();
-    // if (idCustomer) {
-    //   await firebase
-    //     .firestore()
-    //     .collection("chamados")
-    //     .doc(id)
-    //     .update({
-    //       cliente: customers[customerSelected].nomeFornecedor,
-    //       clienteId: customers[customerSelected].id,
-    //       assunto: assunto,
-    //       status: status,
-    //       complemento: complemento,
-    //       userId: user.uid,
-    //     })
-    //     .then(() => {
-    //       toast.success("Pedido editado com sucesso!");
-    //       setCustomerSelected(0);
-    //       setComplemento("");
-    //       history.push("/dashboard");
-    //     })
-    //     .catch((error) => {
-    //       toast.error("Ops, erro ao registrar.");
-    //     });
-    //   return;
-    // }
-    // await firebase
-    //   .firestore()
-    //   .collection("chamados")
-    //   .add({
-    //     created: new Date(),
-    //     cliente: customers[customerSelected].nomeFornecedor,
-    //     clienteId: customers[customerSelected].id,
-    //     assunto: assunto,
-    //     status: status,
-    //     complemento: complemento,
-    //     userId: user.uid,
-    //   })
-    //   .then(() => {
-    //     toast.success("Pedido registrado com sucesso!");
-    //     setComplemento("");
-    //     setCustomerSelected(0);
-    //   })
-    //   .catch((error) => {
-    //     toast.error("Ops, erro ao registrar, tente novamente.");
-    //   });
+  async function handleRegisterProducts(event) {
+    event.preventDefault();
+    setLoading(true);
+    return registerProducts(
+      produtos,
+      fabricante,
+      quantidade,
+      dataValidade,
+      descricao
+    );
   }
 
   function togglePostModal(item) {
     setShowPostModal(!showPostModal); // se esta true ele vai negar e vai mudar pra false (!)
     setDetail(item);
+    setExclusao(item);
+  }
+
+  function togglePostModalEx(item) {
+    setShowPostModalEx(!showPostModalEx); // se esta true ele vai negar e vai mudar pra false (!)
+    setExclusao(item);
   }
 
   //CHAMA QUANDO TROCA O ASSUNTO
@@ -124,10 +106,6 @@ export default function Products() {
     setQuantidade(e.target.value);
   }
 
-  // CHAMA QUANDO TROCA O STATUS
-  function handleOptionChange(e) {
-    setStatus(e.target.value);
-  }
   //CHAMA QUANDO TROCA DE FORNECEDOR
   function handleChangeProviders(e) {
     getAllProviders();
@@ -142,7 +120,7 @@ export default function Products() {
         </Title>
 
         <div className="container">
-          <form className="form-profile" onSubmit={handleRegister}>
+          <form className="form-profile" onSubmit={handleRegisterProducts}>
             <label>Fornecedor</label>
             {loadProviders ? (
               <input
@@ -155,57 +133,56 @@ export default function Products() {
                 {providers.map((item, index) => {
                   return (
                     <option key={item.id} value={index}>
-                      {item.nomeFornecedor}
+                      {item.name}
                     </option>
                   );
                 })}
               </select>
             )}
-            {/* <div>
-              <input type="text" value={produtos} onChange={handleChangeSelect}>
-                Produto
-              </input>
-            </div>
-            <div>
-              <input type="number" value={quantidade} onChange={handleChangeQuantity}>
-                Quantidade
-              </input>
-            </div> */}
-            <label>Status</label>
-            <div className="status">
-              <input
-                type="radio"
-                name="radio"
-                value="Aberto"
-                onChange={handleOptionChange}
-                checked={status === "Aberto"}
-              />
-              <span>Em Aberto</span>
-              <input
-                type="radio"
-                name="radio"
-                value="Progresso"
-                onChange={handleOptionChange}
-                checked={status === "Progresso"}
-              />
-              <span>Em Progresso</span>
-              <input
-                type="radio"
-                name="radio"
-                value="Atendido"
-                onChange={handleOptionChange}
-                checked={status === "Atendido"}
-              />
-              <span>Atendido</span>
-            </div>
-            <label>Descrição</label>
-            <textarea
+            <label>Fabricante</label>
+            <input
               type="text"
-              placeholder="Descreva seu problema (opcional)."
+              placeholder="Ex: Ambev"
+              value={fabricante}
+              onChange={(e) => setFabricantes(e.target.value)}
+            />
+            <label>Produto</label>
+            <input
+              type="text"
+              placeholder="Ex: Coca-Cola"
+              value={produtos}
+              onChange={(e) => setProdutos(e.target.value)}
+            />
+            <label>Tipo</label>
+            <input
+              type="select"
               value={descricao}
+              placeholder="Ex: Bebida Alcóolica"
               onChange={(e) => setDescricao(e.target.value)}
             />
-            <button type="submit">Registrar</button>
+            <label>Quantidade</label>
+            <input
+              type="number"
+              value={quantidade}
+              placeholder="Ex: 10"
+              onChange={(e) => setQuantidade(e.target.value)}
+            />
+            <label>Data de validade</label>
+            <input
+              type="date"
+              value={dataValidade}
+              placeholder="Ex: 10/12/2021"
+              onChange={(e) => setDataValidade(e.target.value)}
+            />
+            <button
+              type="submit"
+              onClick={(event) => {
+                handleRegisterProducts(event);
+                setLoading(true);
+              }}
+            >
+              Registrar
+            </button>
           </form>
         </div>
       </div>
@@ -223,17 +200,19 @@ export default function Products() {
             <table>
               <thead>
                 <tr>
+                  <th scope="col">Fabricante</th>
                   <th scope="col">Produto</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Quantidade</th>
+                  <th scope="col">Data de validade</th>
                   <th scope="col">...</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((item, index) => {
-                  console.log("ITEMASDM", item);
                   return (
                     <tr key={index}>
+                      <td data-label="Fabricante">{item.manufacturer}</td>
                       <td data-label="Produto">{item.name}</td>
                       <td data-label="Descrição">{item.description}</td>
                       <td data-label="Quantidade">
@@ -247,21 +226,31 @@ export default function Products() {
                           {item.quantity}
                         </span>
                       </td>
+                      <td data-label="Data de validade">
+                        {item.validationDate}
+                      </td>
                       <td data-label="#">
                         <button
                           className="action"
-                          style={{ backgroundColor: "#3583f6" }}
+                          style={{ backgroundColor: "#3ECDDF" }}
                           onClick={() => togglePostModal(item)}
                         >
                           <FiSearch color="#fff" size={17} />
                         </button>
                         <Link
                           className="action"
-                          style={{ backgroundColor: "#f6a935" }}
+                          style={{ backgroundColor: "#A9A9A9" }}
                           to={`/new/${item.id}`}
                         >
                           <FiEdit2 color="#fff" size={17} />
                         </Link>
+                        <button
+                          className="action"
+                          style={{ backgroundColor: "#ff0000" }}
+                          onClick={() => togglePostModalEx(item)}
+                        >
+                          <FiTrash2 color="#fff" size={17} />
+                        </button>
                       </td>
                     </tr>
                   );
@@ -277,6 +266,7 @@ export default function Products() {
         )}
       </div>
       {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
+      {showPostModalEx && <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />}
     </div>
   );
 }

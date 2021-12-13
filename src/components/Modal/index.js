@@ -13,12 +13,12 @@ export default function Modal({ conteudo, close }) {
           <h2>Detalhes do pedido</h2>
           <div className="row">
             <span>
-              Cliente: <i>{conteudo.cliente}</i>
+              Fornecedor: <i>{conteudo.providers}</i>
             </span>
           </div>
           <div className="row">
             <span>
-              Assunto: <i>{conteudo.assunto}</i>
+              Descrição: <i>{conteudo.description}</i>
             </span>
             <span>
               Cadastrado em: <i>{conteudo.createdFormated}</i>
@@ -26,7 +26,10 @@ export default function Modal({ conteudo, close }) {
           </div>
           <div className="row">
             <span>
-              Status: <i style={{color: "#fff", backgroundColor: conteudo.status === "Aberto" ? "#5cb85c" : "#999"}}>{conteudo.status}</i>
+              Quantidade:{" "}
+              <i>
+                {conteudo.quantity}
+              </i>
             </span>
           </div>
           {conteudo.complemento !== "" && (

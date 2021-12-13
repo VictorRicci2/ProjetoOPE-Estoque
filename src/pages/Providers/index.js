@@ -5,9 +5,16 @@ import {
   getAllProviders,
   registerProviders,
 } from "../../models/providers/providers";
-import { FiUser, FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
+import {
+  FiUser,
+  FiEdit2,
+  FiMessageSquare,
+  FiSearch,
+  FiTrash2,
+} from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import ModalExclusao from "components/ModalExclusao";
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
@@ -15,10 +22,12 @@ export default function Providers() {
   const [loading, setLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showPostModal, setShowPostModal] = useState(false);
+  const [showPostModalEx, setShowPostModalEx] = useState(false);
   const [loadingMore, setLoadingMore] = useState(true);
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [detail, setDetail] = useState();
+  const [exclusao, setExclusao] = useState();
 
   useEffect(() => {
     async function ProvidersList() {
@@ -50,14 +59,19 @@ export default function Providers() {
   }
 
   async function Providers(event) {
-    event.preventDefault()
-    setLoading(true)
+    event.preventDefault();
+    setLoading(true);
     return registerProviders(nomeFornecedor, email, telefone);
   }
 
   function togglePostModal(item) {
     setShowPostModal(!showPostModal); // se esta true ele vai negar e vai mudar pra false (!)
     setDetail(item);
+  }
+
+  function togglePostModalEx(item) {
+    setShowPostModalEx(!showPostModalEx); // se esta true ele vai negar e vai mudar pra false (!)
+    setExclusao(item);
   }
 
   return (
@@ -90,7 +104,9 @@ export default function Providers() {
               placeholder="Telefone do fornecedor"
               onChange={(e) => setTelefone(e.target.value)}
             />
-            <button type="submit" onClick={(event) => Providers(event)}>Cadastrar</button>
+            <button type="submit" onClick={(event) => Providers(event)}>
+              Cadastrar
+            </button>
           </form>
         </div>
       </div>
@@ -135,18 +151,25 @@ export default function Providers() {
                         <td data-label="#">
                           <button
                             className="action"
-                            style={{ backgroundColor: "#3583f6" }}
+                            style={{ backgroundColor: "#3ECDDF" }}
                             onClick={() => togglePostModal(item)}
                           >
                             <FiSearch color="#fff" size={17} />
                           </button>
                           <Link
                             className="action"
-                            style={{ backgroundColor: "#f6a935" }}
+                            style={{ backgroundColor: "#A9A9A9" }}
                             to={`/new/${item.id}`}
                           >
                             <FiEdit2 color="#fff" size={17} />
                           </Link>
+                          <button
+                            className="action"
+                            style={{ backgroundColor: "#ff0000" }}
+                            onClick={() => togglePostModalEx(item)}
+                          >
+                            <FiTrash2 color="#fff" size={17} />
+                          </button>
                         </td>
                       </tr>
                     );
@@ -155,13 +178,16 @@ export default function Providers() {
               </table>
               {loadingMore && (
                 <h3 style={{ textAlign: "center", marginTop: 15 }}>
-                  Buscando produtos...
+                  Buscando fornecedores...
                 </h3>
               )}
             </>
           )}
         </div>
         {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
+        {showPostModalEx && (
+          <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />
+        )}
       </div>
     </div>
   );

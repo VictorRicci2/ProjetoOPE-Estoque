@@ -1,8 +1,8 @@
-import 'react-toastify/dist/ReactToastify.css'
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./contexts/userAuth";
-import { ToastContainer } from 'react-toastify';
-import Admin from 'layouts/Admin';
+import { ToastContainer } from "react-toastify";
+import Admin from "layouts/Admin";
 
 function App() {
   return (
