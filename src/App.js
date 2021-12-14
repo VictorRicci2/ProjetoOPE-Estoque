@@ -1,17 +1,21 @@
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
-import AuthProvider from "./contexts/userAuth";
 import { ToastContainer } from "react-toastify";
+import { useContext } from 'react'
+import { AuthContext } from "./contexts/userAuth"
+import Routes from "routes"
 import Admin from "layouts/Admin";
 
+
+
 function App() {
+  const { user } = useContext(AuthContext)
+
   return (
-    <AuthProvider>
       <BrowserRouter>
         <ToastContainer autoClose={3000} />
-        <Admin />
+        {user ? <Admin /> : <Routes />}
       </BrowserRouter>
-    </AuthProvider>
   );
 }
 

@@ -59,7 +59,7 @@ export default function Providers() {
   }
 
   async function Providers(event) {
-    event.preventDefault();
+    event.preventDefault()
     setLoading(true);
     return registerProviders(nomeFornecedor, email, telefone);
   }
@@ -149,13 +149,6 @@ export default function Providers() {
                           </span>
                         </td>
                         <td data-label="#">
-                          <button
-                            className="action"
-                            style={{ backgroundColor: "#3ECDDF" }}
-                            onClick={() => togglePostModal(item)}
-                          >
-                            <FiSearch color="#fff" size={17} />
-                          </button>
                           <Link
                             className="action"
                             style={{ backgroundColor: "#A9A9A9" }}

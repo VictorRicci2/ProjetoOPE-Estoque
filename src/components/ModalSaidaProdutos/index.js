@@ -1,14 +1,14 @@
-import "./modalExclusao.css";
+// import "./modalSaidaProdutos.css";
 import { FiX } from "react-icons/fi";
-import { addExitProducts } from "models/exitProducts/exitProducts.js";
+import { deletedExitProducts } from "models/exitProducts/exitProducts.js";
 
-export default function ModalExclusao({
+export default function ModalSaidaProdutos({
   conteudo,
   close,
   setLoading,
 }) {
   return (
-    <div className="modalExclusao">
+    <div className="modaSaidaProdutos">
       <div className="container">
         <button className="close" onClick={close}>
           <FiX size={23} color={"#fff"} />
@@ -24,7 +24,7 @@ export default function ModalExclusao({
           </>
         )}
         <button
-          onClick={() => addExitProducts(conteudo)
+          onClick={() => deletedExitProducts(conteudo.id)
           }
         >
           Continuar

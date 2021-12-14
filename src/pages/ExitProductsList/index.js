@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import ExitProductsModel from "../../models/exitProducts/exitProducts.js";
+import { getAllExitProducts } from "../../models/exitProducts/exitProducts.js";
 import "./exitProducts.css";
 import Title from "../../components/Title";
-import { FiTrash2, FiEdit2, FiMessageSquare, FiSearch } from "react-icons/fi";
+import { FiTrash2, FiEdit2, FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
-import ModalExclusao from "../../components/ModalExclusao";
+import ModalSaidaProdutos from "components/ModalSaidaProdutos/index.js";
 
 export default function ExitProducts() {
   const [exitProducts, setExitProducts] = useState([]);
@@ -19,7 +19,7 @@ export default function ExitProducts() {
 
   useEffect(() => {
     async function ExitProductsList() {
-      const data = await ExitProductsModel();
+      const data = await getAllExitProducts();
       updateState(data);
     }
     ExitProductsList();
@@ -99,6 +99,7 @@ export default function ExitProducts() {
               </thead>
               <tbody>
                 {exitProducts.map((item, index) => {
+                  console.log("***", item)
                   return (
                     <tr key={index}>
                       <td data-label="Fabricante">{item.manufacturer}</td>
@@ -117,13 +118,6 @@ export default function ExitProducts() {
                       </td>
                       <td data-label="Data de saída">{item.exitData}</td>
                       <td data-label="#">
-                        <button
-                          className="action"
-                          style={{ backgroundColor: "#3ECDDF" }}
-                          onClick={() => togglePostModal(item)}
-                        >
-                          <FiSearch color="#fff" size={17} />
-                        </button>
                         <Link
                           className="action"
                           style={{ backgroundColor: "#A9A9A9" }}
@@ -154,7 +148,7 @@ export default function ExitProducts() {
       </div>
       {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
       {showPostModalEx && (
-        <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />
+        <ModalSaidaProdutos conteudo={exclusao} close={togglePostModalEx} />
       )}
     </div>
   );

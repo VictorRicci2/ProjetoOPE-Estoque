@@ -23,7 +23,7 @@ export async function registerProducts(
   manufacturer,
   quantity,
   validationDate,
-  description
+  description,
 ) {
   const options = {
     method: "POST",
@@ -37,6 +37,7 @@ export async function registerProducts(
       description,
     },
   };
+
 
   return axios
     .request(options)

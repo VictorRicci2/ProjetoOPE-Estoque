@@ -10,34 +10,25 @@ export default function Modal({ conteudo, close }) {
           Voltar
         </button>
         <div>
-          <h2>Detalhes do pedido</h2>
+          <h2>Detalhes do produto</h2>
           <div className="row">
             <span>
-              Fornecedor: <i>{conteudo.providers}</i>
+              Fabricante: <i>{conteudo.manufacturer}</i>
             </span>
           </div>
           <div className="row">
             <span>
-              Descrição: <i>{conteudo.description}</i>
+              Tipo: <i>{conteudo.description}</i>
             </span>
             <span>
               Cadastrado em: <i>{conteudo.createdFormated}</i>
             </span>
           </div>
-          <div className="row">
+          <div>
             <span>
-              Quantidade:{" "}
-              <i>
-                {conteudo.quantity}
-              </i>
+              Quantidade: <i>{conteudo.quantity}</i>
             </span>
           </div>
-          {conteudo.complemento !== "" && (
-            <>
-              <h3>Complemento</h3>
-              <p>{conteudo.complemento}</p>
-            </>
-          )}
         </div>
       </div>
     </div>

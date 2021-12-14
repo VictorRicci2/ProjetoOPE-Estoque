@@ -10,7 +10,6 @@ import {
   FiEdit2,
   FiMessageSquare,
   FiPlus,
-  FiSearch,
   FiTrash2,
 } from "react-icons/fi";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -34,6 +33,7 @@ export default function Products() {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(true);
+  const [loadingList, setLoadingList] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showPostModal, setShowPostModal] = useState(false);
   const [showPostModalEx, setShowPostModalEx] = useState(false);
@@ -47,6 +47,7 @@ export default function Products() {
       updateState(data);
       setProviders(dataProvider);
       setLoadProviders(false);
+      setLoadingList(false)
     }
     ProductsList();
   }, []);
@@ -75,8 +76,7 @@ export default function Products() {
   }
 
   async function handleRegisterProducts(event) {
-    event.preventDefault();
-    setLoading(true);
+    event.preventDefault()
     return registerProducts(
       produtos,
       fabricante,
@@ -178,7 +178,6 @@ export default function Products() {
               type="submit"
               onClick={(event) => {
                 handleRegisterProducts(event);
-                setLoading(true);
               }}
             >
               Registrar
@@ -186,6 +185,7 @@ export default function Products() {
           </form>
         </div>
       </div>
+
       <div className="content">
         <Title name="Lista de Produtos">
           <FiMessageSquare size={25} />
@@ -230,17 +230,10 @@ export default function Products() {
                         {item.validationDate}
                       </td>
                       <td data-label="#">
-                        <button
-                          className="action"
-                          style={{ backgroundColor: "#3ECDDF" }}
-                          onClick={() => togglePostModal(item)}
-                        >
-                          <FiSearch color="#fff" size={17} />
-                        </button>
                         <Link
                           className="action"
                           style={{ backgroundColor: "#A9A9A9" }}
-                          to={`/new/${item.id}`}
+                          to={`/listaprodutos/${item.id}`}
                         >
                           <FiEdit2 color="#fff" size={17} />
                         </Link>
@@ -266,7 +259,9 @@ export default function Products() {
         )}
       </div>
       {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
-      {showPostModalEx && <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />}
+      {showPostModalEx && (
+        <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />
+      )}
     </div>
   );
 }
