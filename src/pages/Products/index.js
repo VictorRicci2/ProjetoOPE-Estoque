@@ -6,12 +6,7 @@ import {
 import { getAllProviders } from "../../models/providers/providers";
 import "./products.css";
 import Title from "../../components/Title";
-import {
-  FiEdit2,
-  FiMessageSquare,
-  FiPlus,
-  FiTrash2,
-} from "react-icons/fi";
+import { FiEdit2, FiMessageSquare, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 import ModalExclusao from "../../components/ModalExclusao";
@@ -40,15 +35,17 @@ export default function Products() {
   const [detail, setDetail] = useState();
   const [exclusao, setExclusao] = useState();
 
+  async function ProductsList() {
+    setLoadingList(true)
+    const data = await getAllProducts();
+    const dataProvider = await getAllProviders();
+    updateState(data);
+    setProviders(dataProvider);
+    setLoadProviders(false);
+    setLoadingList(false);
+  }
+
   useEffect(() => {
-    async function ProductsList() {
-      const data = await getAllProducts();
-      const dataProvider = await getAllProviders();
-      updateState(data);
-      setProviders(dataProvider);
-      setLoadProviders(false);
-      setLoadingList(false)
-    }
     ProductsList();
   }, []);
 
@@ -67,7 +64,7 @@ export default function Products() {
           validationDate: doc.validationDate,
         });
       });
-      setProducts((products) => [...products, ...lista]);
+      setProducts(lista);
     } else {
       setIsEmpty(true);
     }
@@ -76,14 +73,15 @@ export default function Products() {
   }
 
   async function handleRegisterProducts(event) {
-    event.preventDefault()
-    return registerProducts(
+    event.preventDefault();
+    await registerProducts(
       produtos,
       fabricante,
       quantidade,
       dataValidade,
       descricao
     );
+    return ProductsList();
   }
 
   function togglePostModal(item) {

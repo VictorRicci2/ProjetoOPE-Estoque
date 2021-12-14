@@ -29,11 +29,11 @@ export default function Providers() {
   const [detail, setDetail] = useState();
   const [exclusao, setExclusao] = useState();
 
+  async function ProvidersList() {
+    const data = await getAllProviders();
+    updateState(data);
+  }
   useEffect(() => {
-    async function ProvidersList() {
-      const data = await getAllProviders();
-      updateState(data);
-    }
     ProvidersList();
   }, []);
 
@@ -50,7 +50,7 @@ export default function Providers() {
           email: doc.email,
         });
       });
-      setProviders((providers) => [...providers, ...lista]);
+      setProviders(lista);
     } else {
       setIsEmpty(true);
     }
@@ -60,8 +60,8 @@ export default function Providers() {
 
   async function Providers(event) {
     event.preventDefault()
-    setLoading(true);
-    return registerProviders(nomeFornecedor, email, telefone);
+    await registerProviders(nomeFornecedor, email, telefone);
+    return ProvidersList()
   }
 
   function togglePostModal(item) {
