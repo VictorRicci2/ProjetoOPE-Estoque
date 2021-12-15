@@ -9,12 +9,12 @@ import {
   FiUser,
   FiEdit2,
   FiMessageSquare,
-  FiSearch,
   FiTrash2,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ModalExclusao from "components/ModalExclusao";
+import {mask, unMask } from "remask"
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
@@ -102,7 +102,7 @@ export default function Providers() {
               type="text"
               value={telefone}
               placeholder="Telefone do fornecedor"
-              onChange={(e) => setTelefone(e.target.value)}
+              onChange={(e) => setTelefone(mask(e.target.value, ["(99) 99999-9999"]))}
             />
             <button type="submit" onClick={(event) => Providers(event)}>
               Cadastrar
@@ -152,7 +152,7 @@ export default function Providers() {
                           <Link
                             className="action"
                             style={{ backgroundColor: "#A9A9A9" }}
-                            to={`/new/${item.id}`}
+                            to={`/fornecedores/${item.id}`}
                           >
                             <FiEdit2 color="#fff" size={17} />
                           </Link>

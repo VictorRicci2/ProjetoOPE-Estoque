@@ -171,14 +171,12 @@ export default function Products() {
             <input
               type="date"
               value={dataEntrada}
-              placeholder="Ex: 10/12/2021"
               onChange={(e) => setDataEntrada(e.target.value)}
             />
              <label>Data de Validade</label>
             <input
               type="date"
               value={dataValidade}
-              placeholder="Ex: 10/12/2021"
               onChange={(e) => setDataValidade(e.target.value)}
             />
             <button

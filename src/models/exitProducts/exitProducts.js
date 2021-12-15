@@ -22,7 +22,7 @@ export async function addExitProducts({
   name,
   manufacturer,
   quantity,
-  validationDate,
+  exitData,
   description,
 }) {
   const options = {
@@ -34,7 +34,7 @@ export async function addExitProducts({
       name,
       manufacturer,
       quantity,
-      validationDate,
+      exitData,
       description,
     },
   };

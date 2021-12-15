@@ -3,6 +3,8 @@ import {
   getAllProducts,
   registerProducts,
 } from "../../models/products/products.js";
+import Title from "../../components/Title";
+import { FiEdit } from "react-icons/fi";
 import { getAllProviders } from "../../models/providers/providers";
 
 export default function EditProducts() {
@@ -74,77 +76,82 @@ export default function EditProducts() {
   }
 
   return (
-    <div className="container">
-      <form className="form-profile" onSubmit={handleRegisterProducts}>
-        <label>Fornecedor</label>
-        {loadProviders ? (
+    <div className="content">
+      <Title name="Editar Produto">
+        <FiEdit size={25} />
+      </Title>
+      <div className="container">
+        <form className="form-profile" onSubmit={handleRegisterProducts}>
+          <label>Fornecedor</label>
+          {loadProviders ? (
+            <input
+              type="text"
+              disabled={true}
+              value="Carregando fornecedores..."
+            />
+          ) : (
+            <select value={providerSelected} onChange={handleChangeProviders}>
+              {providers.map((item, index) => {
+                return (
+                  <option key={item.id} value={index}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+          <label>Fabricante</label>
           <input
             type="text"
-            disabled={true}
-            value="Carregando fornecedores..."
+            placeholder="Ex: Ambev"
+            value={fabricante}
+            onChange={(e) => setFabricantes(e.target.value)}
           />
-        ) : (
-          <select value={providerSelected} onChange={handleChangeProviders}>
-            {providers.map((item, index) => {
-              return (
-                <option key={item.id} value={index}>
-                  {item.name}
-                </option>
-              );
-            })}
-          </select>
-        )}
-        <label>Fabricante</label>
-        <input
-          type="text"
-          placeholder="Ex: Ambev"
-          value={fabricante}
-          onChange={(e) => setFabricantes(e.target.value)}
-        />
-        <label>Produto</label>
-        <input
-          type="text"
-          placeholder="Ex: Coca-Cola"
-          value={produtos}
-          onChange={(e) => setProdutos(e.target.value)}
-        />
-        <label>Tipo</label>
-        <input
-          type="select"
-          value={descricao}
-          placeholder="Ex: Bebida Alcóolica"
-          onChange={(e) => setDescricao(e.target.value)}
-        />
-        <label>Quantidade</label>
-        <input
-          type="number"
-          value={quantidade}
-          placeholder="Ex: 10"
-          onChange={(e) => setQuantidade(e.target.value)}
-        />
-        <label>Data de Entrada</label>
-        <input
-          type="date"
-          value={dataEntrada}
-          placeholder="Ex: 10/12/2021"
-          onChange={(e) => setDataEntrada(e.target.value)}
-        />
-        <label>Data de Validade</label>
-        <input
-          type="date"
-          value={dataValidade}
-          placeholder="Ex: 10/12/2021"
-          onChange={(e) => setDataValidade(e.target.value)}
-        />
-        <button
-          type="submit"
-          onClick={(event) => {
-            handleRegisterProducts(event);
-          }}
-        >
-          Registrar
-        </button>
-      </form>
+          <label>Produto</label>
+          <input
+            type="text"
+            placeholder="Ex: Coca-Cola"
+            value={produtos}
+            onChange={(e) => setProdutos(e.target.value)}
+          />
+          <label>Tipo</label>
+          <input
+            type="select"
+            value={descricao}
+            placeholder="Ex: Bebida Alcóolica"
+            onChange={(e) => setDescricao(e.target.value)}
+          />
+          <label>Quantidade</label>
+          <input
+            type="number"
+            value={quantidade}
+            placeholder="Ex: 10"
+            onChange={(e) => setQuantidade(e.target.value)}
+          />
+          <label>Data de Entrada</label>
+          <input
+            type="date"
+            value={dataEntrada}
+            placeholder="Ex: 10/12/2021"
+            onChange={(e) => setDataEntrada(e.target.value)}
+          />
+          <label>Data de Validade</label>
+          <input
+            type="date"
+            value={dataValidade}
+            placeholder="Ex: 10/12/2021"
+            onChange={(e) => setDataValidade(e.target.value)}
+          />
+          <button
+            type="submit"
+            onClick={(event) => {
+              handleRegisterProducts(event);
+            }}
+          >
+            Editar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

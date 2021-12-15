@@ -17,11 +17,12 @@ export default function ExitProducts() {
   const [detail, setDetail] = useState();
   const [exclusao, setExclusao] = useState();
 
+  async function ExitProductsList() {
+    const data = await getAllExitProducts();
+    updateState(data);
+  }
+
   useEffect(() => {
-    async function ExitProductsList() {
-      const data = await getAllExitProducts();
-      updateState(data);
-    }
     ExitProductsList();
   }, []);
 
@@ -34,13 +35,13 @@ export default function ExitProducts() {
         lista.push({
           id: doc.id,
           manufacturer: doc.manufacturer,
-          productName: doc.productName,
+          name: doc.name,
           description: doc.description,
           quantity: doc.quantity,
           exitData: doc.exitData,
         });
       });
-      setExitProducts((exitProducts) => [...exitProducts, ...lista]);
+      setExitProducts(lista);
     } else {
       setIsEmpty(true);
     }
@@ -99,7 +100,7 @@ export default function ExitProducts() {
               </thead>
               <tbody>
                 {exitProducts.map((item, index) => {
-                  console.log("***", item)
+                  console.log("***", item);
                   return (
                     <tr key={index}>
                       <td data-label="Fabricante">{item.manufacturer}</td>
