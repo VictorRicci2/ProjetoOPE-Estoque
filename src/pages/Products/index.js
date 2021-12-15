@@ -36,7 +36,7 @@ export default function Products() {
   const [exclusao, setExclusao] = useState();
 
   async function ProductsList() {
-    setLoadingList(true)
+    setLoadingList(true);
     const data = await getAllProducts();
     const dataProvider = await getAllProviders();
     updateState(data);
@@ -50,9 +50,13 @@ export default function Products() {
   }, []);
 
   async function updateState(snapshot) {
+    if (!snapshot || snapshot === "Nenhum produto cadastrado.") {
+      snapshot = [];
+    }
     const isCollectionEmpty = snapshot.length === 0;
 
     if (!isCollectionEmpty) {
+      console.log(snapshot)
       let lista = [];
       snapshot.forEach((doc) => {
         lista.push({
@@ -173,7 +177,7 @@ export default function Products() {
               value={dataEntrada}
               onChange={(e) => setDataEntrada(e.target.value)}
             />
-             <label>Data de Validade</label>
+            <label>Data de Validade</label>
             <input
               type="date"
               value={dataValidade}
@@ -232,9 +236,7 @@ export default function Products() {
                           {item.quantity}
                         </span>
                       </td>
-                      <td data-label="Data de entrada">
-                        {item.entryDate}
-                      </td>
+                      <td data-label="Data de entrada">{item.entryDate}</td>
                       <td data-label="Data de validade">
                         {item.validationDate}
                       </td>

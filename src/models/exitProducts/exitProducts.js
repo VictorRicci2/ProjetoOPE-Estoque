@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 export async function getAllExitProducts() {
   const options = {
     method: "GET",
-    url: "http://https://estoque-api.herokuapp.com/exitProducts",
+    url: "https://estoque-api.herokuapp.com/exitProducts",
   };
 
   return axios
@@ -52,8 +52,8 @@ export async function addExitProducts({
 export async function deletedExitProducts(id) {
   const options = {
     method: "DELETE",
-    url: "https://estoque-api.herokuapp.com/exitProducts",
-    data: {id},
+    url: `https://estoque-api.herokuapp.com/exitProducts/${id}`,
+
   };
 
   return axios

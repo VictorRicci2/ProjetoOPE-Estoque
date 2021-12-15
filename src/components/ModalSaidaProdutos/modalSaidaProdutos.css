@@ -38,6 +38,34 @@
     margin-right: 5px;
 }
 
+.buttonContinue {
+    background-color: black;
+    border: 0;
+    color: #fff;
+    position: absolute;
+    top: 145px;
+    left: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 15px;
+    border-radius: 5px;
+  }
+  
+  .buttonCancel {
+    background-color: black;
+    border: 0;
+    color: #fff;
+    position: absolute;
+    top: 145px;
+    left: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 15px;
+    border-radius: 5px;
+  }
+  
 .modalSaidaProdutos h2{
     margin-bottom: 1.2em;
     font-size: 2em;

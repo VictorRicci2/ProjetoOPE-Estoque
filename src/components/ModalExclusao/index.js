@@ -1,8 +1,7 @@
 import "./modalExclusao.css";
-import { FiX } from "react-icons/fi";
 import { addExitProducts } from "models/exitProducts/exitProducts.js";
 
-export default function ModalExclusao({ conteudo, close, setLoading }) {
+export default function ModalExclusao({ conteudo, close }) {
   return (
     <div className="modalExclusao">
       <div className="container">

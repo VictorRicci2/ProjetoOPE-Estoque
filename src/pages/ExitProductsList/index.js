@@ -27,7 +27,11 @@ export default function ExitProducts() {
   }, []);
 
   async function updateState(snapshot) {
-    const isCollectionEmpty = snapshot.length === 0;
+    if(!snapshot || snapshot === "Nenhum produto cadastrado.") {
+      snapshot = []
+    }
+
+    const isCollectionEmpty = snapshot.length === 0 ;
 
     if (!isCollectionEmpty) {
       let lista = [];
@@ -104,7 +108,7 @@ export default function ExitProducts() {
                   return (
                     <tr key={index}>
                       <td data-label="Fabricante">{item.manufacturer}</td>
-                      <td data-label="Produto">{item.productName}</td>
+                      <td data-label="Produto">{item.name}</td>
                       <td data-label="Tipo">{item.description}</td>
                       <td data-label="Quantidade">
                         {item.quantity}

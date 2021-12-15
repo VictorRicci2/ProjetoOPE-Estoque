@@ -13,8 +13,8 @@ import {
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ModalExclusao from "components/ModalExclusao";
-import {mask, unMask } from "remask"
+import {mask } from "remask"
+import ModalFornecedor from "components/ModalFornecedor";
 
 export default function Providers() {
   const [providers, setProviders] = useState([]);
@@ -38,6 +38,10 @@ export default function Providers() {
   }, []);
 
   async function updateState(snapshot) {
+    if(!snapshot || snapshot === "Nenhum fornecedor cadastrado.") {
+      snapshot = []
+    } 
+
     const isCollectionEmpty = snapshot.length === 0;
 
     if (!isCollectionEmpty) {
@@ -69,7 +73,7 @@ export default function Providers() {
     setDetail(item);
   }
 
-  function togglePostModalEx(item) {
+  function togglePostModalFor(item) {
     setShowPostModalEx(!showPostModalEx); // se esta true ele vai negar e vai mudar pra false (!)
     setExclusao(item);
   }
@@ -159,7 +163,7 @@ export default function Providers() {
                           <button
                             className="action"
                             style={{ backgroundColor: "#ff0000" }}
-                            onClick={() => togglePostModalEx(item)}
+                            onClick={() => togglePostModalFor(item)}
                           >
                             <FiTrash2 color="#fff" size={17} />
                           </button>
@@ -179,7 +183,7 @@ export default function Providers() {
         </div>
         {showPostModal && <Modal conteudo={detail} close={togglePostModal} />}
         {showPostModalEx && (
-          <ModalExclusao conteudo={exclusao} close={togglePostModalEx} />
+          <ModalFornecedor conteudo={exclusao} close={togglePostModalFor} />
         )}
       </div>
     </div>

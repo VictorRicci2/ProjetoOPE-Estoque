@@ -4,10 +4,11 @@ import { FiUser } from "react-icons/fi";
 import {
   getAllProviders,
   registerProviders,
+  updateProviders,
 } from "../../models/providers/providers";
 import { mask } from "remask";
 
-export default function EditProviders() {
+export default function EditProviders(props) {
   const [providers, setProviders] = useState([]);
   const [nomeFornecedor, setNomeFornecedor] = useState("");
   const [loading, setLoading] = useState(true);
@@ -26,35 +27,23 @@ export default function EditProviders() {
   }, []);
 
   async function updateState(snapshot) {
-    const isCollectionEmpty = snapshot.length === 0;
-
-    if (!isCollectionEmpty) {
-      let lista = [];
-      snapshot.forEach((doc) => {
-        lista.push({
-          id: doc.id,
-          description: doc.description,
-          manufacturer: doc.manufacturer,
-          quantity: doc.quantity,
-          name: doc.name,
-          validationDate: doc.validationDate,
-          entryDate: doc.entryDate,
-        });
-      });
-      setProviders(lista);
-    } else {
-      setIsEmpty(true);
-    }
-    setLoading(false);
-    setLoadingMore(false);
+    const { id } = props.match.params;
+    snapshot.forEach((provider) => {
+      if (provider.id === id) {
+        setNomeFornecedor(provider.name);
+        setEmail(provider.email);
+        setTelefone(provider.cellphone);
+      }
+    });
   }
 
   async function Providers(event) {
+    const { id } = props.match.params;
     event.preventDefault();
-    await registerProviders(nomeFornecedor, email, telefone);
-    return ProvidersList();
+    await updateProviders(id, nomeFornecedor, email, telefone);
+    await new Promise(r => setTimeout(r, 2000));
+    return window.location.href = "/fornecedores"
   }
-
 
   return (
     <div className="content">
