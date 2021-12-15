@@ -1,9 +1,10 @@
 .container-center{
+    margin: -8px;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #121212;;
+    background-color: #000000;;
 }
 
 .login{
@@ -20,6 +21,7 @@
     justify-content: center;
     background-color: #181c2e;
     width: 100%;
+    box-shadow: #000000;
 }
 
 .login-area img{

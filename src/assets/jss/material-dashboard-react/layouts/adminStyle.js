@@ -7,7 +7,7 @@ import {
 const appStyle = (theme) => ({
   wrapper: {
     position: "relative",
-    top: "7px",
+    top: "0px",
     height: "100vh",
   },
   mainPanel: {
@@ -18,14 +18,14 @@ const appStyle = (theme) => ({
     position: "relative",
     float: "right",
     ...transition,
-    maxHeight: "100%",
+    maxHeight: "98%",
     width: "100%",
     overflowScrolling: "touch",
   },
   content: {
     marginTop: "70px",
     padding: "30px 15px",
-    minHeight: "calc(100vh - 123px)",
+    minHeight: "calc(100vh - 20px)",
   },
   container,
   map: {

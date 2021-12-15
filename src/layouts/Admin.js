@@ -9,10 +9,10 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
-import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
+import bgImage from "assets/img/sidebar-4.jpg";
+import logo from "assets/img/logo.png";
 import Routes from "routes";
-import { Dashboard, ViewList, AssignmentInd, Settings } from "@material-ui/icons";
+import { Dashboard, ViewList, AssignmentInd, Settings, AddShoppingCartOutlined, PersonAdd } from "@material-ui/icons";
 
 
 let ps;
@@ -27,8 +27,8 @@ const list = [
   },
   {
     path: "/listaprodutos",
-    name: "Produtos",
-    icon: ViewList,
+    name: "Cadastrar Produtos",
+    icon: AddShoppingCartOutlined,
   },
   {
     path: "/listasaidadeprodutos",
@@ -37,8 +37,8 @@ const list = [
   },
   {
     path: "/fornecedores",
-    name: "Fornecedores",
-    icon: AssignmentInd,
+    name: "Cadastrar Fornecedores",
+    icon: PersonAdd,
   },
   {
     path: "/profile",
@@ -102,7 +102,7 @@ export default function Admin({ ...rest }) {
     <div className={classes.wrapper}>
       <Sidebar
         routes={list}
-        logoText={"Estoque"}
+        logoText={"EstoqueJa"}
         logo={logo}
         image={image}
         handleDrawerToggle={handleDrawerToggle}

@@ -3,7 +3,7 @@ import Route from "./Route";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Products from "../pages/Products";
-import NewProducts from "../pages/NewProducts";
+import EditProducts from "../pages/EditProducts"
 import ExitProductsList from "../pages/ExitProductsList";
 import Providers from "../pages/Providers";
 import SignIn from "../pages/SignIn";
@@ -18,8 +18,7 @@ export default function Routes() {
       <Route exact path="/profile" component={Profile} isPrivate />
       <Route exact path="/fornecedores" component={Providers} isPrivate />
       <Route exact path="/listaprodutos" component={Products} isPrivate />
-      <Route exact path="/newProducts" component={NewProducts} isPrivate />
-      <Route exact path="/newProducts/:id" component={NewProducts} isPrivate />
+      <Route exact path="/listaprodutos/:id" component={EditProducts} isPrivate />
       <Route
         exact
         path="/listasaidadeprodutos"

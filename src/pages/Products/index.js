@@ -11,7 +11,6 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 import ModalExclusao from "../../components/ModalExclusao";
 import { AuthContext } from "../../contexts/userAuth";
-import { toast } from "react-toastify";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -19,6 +18,7 @@ export default function Products() {
   const [produtos, setProdutos] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [dataEntrada, setDataEntrada] = useState("");
   const [dataValidade, setDataValidade] = useState("");
   const [providerSelected, setProviderSelected] = useState(0);
   const [loadProviders, setLoadProviders] = useState(true);
@@ -62,6 +62,7 @@ export default function Products() {
           quantity: doc.quantity,
           name: doc.name,
           validationDate: doc.validationDate,
+          entryDate: doc.entryDate,
         });
       });
       setProducts(lista);
@@ -79,6 +80,7 @@ export default function Products() {
       fabricante,
       quantidade,
       dataValidade,
+      dataEntrada,
       descricao
     );
     return ProductsList();
@@ -165,7 +167,14 @@ export default function Products() {
               placeholder="Ex: 10"
               onChange={(e) => setQuantidade(e.target.value)}
             />
-            <label>Data de validade</label>
+            <label>Data de Entrada</label>
+            <input
+              type="date"
+              value={dataEntrada}
+              placeholder="Ex: 10/12/2021"
+              onChange={(e) => setDataEntrada(e.target.value)}
+            />
+             <label>Data de Validade</label>
             <input
               type="date"
               value={dataValidade}
@@ -202,6 +211,7 @@ export default function Products() {
                   <th scope="col">Produto</th>
                   <th scope="col">Tipo</th>
                   <th scope="col">Quantidade</th>
+                  <th scope="col">Data de Entrada</th>
                   <th scope="col">Data de validade</th>
                   <th scope="col">...</th>
                 </tr>
@@ -223,6 +233,9 @@ export default function Products() {
                         >
                           {item.quantity}
                         </span>
+                      </td>
+                      <td data-label="Data de entrada">
+                        {item.entryDate}
                       </td>
                       <td data-label="Data de validade">
                         {item.validationDate}

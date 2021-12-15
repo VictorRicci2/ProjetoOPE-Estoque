@@ -23,6 +23,7 @@ export async function registerProducts(
   manufacturer,
   quantity,
   validationDate,
+  entryDate,
   description,
 ) {
   const options = {
@@ -34,6 +35,7 @@ export async function registerProducts(
       manufacturer,
       quantity,
       validationDate,
+      entryDate,
       description,
     },
   };
