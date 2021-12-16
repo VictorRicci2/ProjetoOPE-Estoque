@@ -33,7 +33,7 @@ export default function CardHeader(props) {
 CardHeader.propTypes = {
   className: PropTypes.string,
   color: PropTypes.oneOf([
-    "warning",
+    "info",
     "success",
     "danger",
     "info",

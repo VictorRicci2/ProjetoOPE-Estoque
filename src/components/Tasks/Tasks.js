@@ -57,8 +57,9 @@ export default function Tasks(props) {
             <TableCell className={tableCellClasses}>{tasks[value]}</TableCell>
             <TableCell className={classes.tableActions}>
               <Tooltip
+                type="text"
                 id="tooltip-top"
-                title="Edit Task"
+                title="Editar"
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}
               >

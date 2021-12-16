@@ -5,7 +5,7 @@ import Title from "../../components/Title";
 import { FiTrash2, FiEdit2, FiMessageSquare } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
-import ModalSaidaProdutos from "components/ModalSaidaProdutos/index.js";
+import ModalSaidaProdutos from "../../components/ModalSaidaProdutos";
 
 export default function ExitProducts() {
   const [exitProducts, setExitProducts] = useState([]);

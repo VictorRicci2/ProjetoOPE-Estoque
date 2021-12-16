@@ -109,7 +109,7 @@ const primaryBoxShadow = {
     "0 4px 20px 0 rgba(" +
     hexToRgb(blackColor) +
     ",.14), 0 7px 10px -5px rgba(" +
-    hexToRgb(primaryColor[0]) +
+    hexToRgb(grayColor[0]) +
     ",.4)",
 };
 const infoBoxShadow = {
@@ -133,7 +133,7 @@ const warningBoxShadow = {
     "0 4px 20px 0 rgba(" +
     hexToRgb(blackColor) +
     ",.14), 0 7px 10px -5px rgba(" +
-    hexToRgb(warningColor[0]) +
+    hexToRgb(grayColor[0]) +
     ",.4)",
 };
 const dangerBoxShadow = {
@@ -149,13 +149,13 @@ const roseBoxShadow = {
     "0 4px 20px 0 rgba(" +
     hexToRgb(blackColor) +
     ",.14), 0 7px 10px -5px rgba(" +
-    hexToRgb(roseColor[0]) +
+    hexToRgb(grayColor[0]) +
     ",.4)",
 };
 
 const warningCardHeader = {
   background:
-    "linear-gradient(60deg, " + warningColor[1] + ", " + warningColor[2] + ")",
+    "linear-gradient(60deg, " + grayColor[1] + ", " + grayColor[2] + ")",
   ...warningBoxShadow,
 };
 const successCardHeader = {
@@ -175,7 +175,7 @@ const infoCardHeader = {
 };
 const primaryCardHeader = {
   background:
-    "linear-gradient(60deg, " + primaryColor[1] + ", " + primaryColor[2] + ")",
+    "linear-gradient(60deg, " + grayColor[1] + ", " + grayColor[2] + ")",
   ...primaryBoxShadow,
 };
 const roseCardHeader = {
