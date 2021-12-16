@@ -10,7 +10,7 @@ export default function ModalSaidaProdutos({ conteudo, close }) {
         </div>
         <button
           className="buttonContinue"
-          onClick={() => deletedExitProducts(conteudo.id)}
+          onClick={async () => {await deletedExitProducts(conteudo.id); window.location.reload()}}
         >
           Continuar
         </button>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -31,17 +32,47 @@ import CardFooter from "../../components/Card/CardFooter";
 
 import { tarefas } from "../../variables/general";
 
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
-} from "../../variables/charts";
-
 import styles from "./dashboardStyle.js";
+
+import { getAllProducts } from "models/products/products";
+import { getAllProviders } from "models/providers/providers";
+import { getAllExitProducts } from "models/exitProducts/exitProducts";
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
+  const [inventory, setInventory] = useState(0);
+  const [providers, setProviders] = useState(0);
+  const [fornecedor, setFornecedor] = useState([]);
+  const [exitProducts, setExitProducts] = useState(0);
+
+  async function getAll() {
+    const dataProduct = await getAllProducts();
+    if (dataProduct.length) {
+      const estoqueTotal = dataProduct.reduce(
+        (acc, cur) => (acc = acc + Number(cur.quantity)),
+        0
+      );
+      setInventory(estoqueTotal);
+      console.log(inventory);
+    }
+    const dataProvider = await getAllProviders();
+    if (dataProvider.length) {
+      const fornecedorTotal = dataProvider.length;
+      setProviders(fornecedorTotal);
+      setFornecedor(dataProvider);
+    }
+    const dataExit = await getAllExitProducts();
+    if (dataExit.length) {
+      const saidaTotal = dataExit.length;
+      setExitProducts(saidaTotal);
+    }
+  }
+
+  useEffect(() => {
+    getAll();
+  }, []);
+
   const classes = useStyles();
   return (
     <div>
@@ -52,9 +83,10 @@ export default function Dashboard() {
               <CardIcon color="info">
                 <Icon>Total Estoque</Icon>
               </CardIcon>
-              <br/>
+              <br />
               <h3 className={classes.cardTitle}>
-                49/150 <small>produtos</small>
+                {`${inventory}/500 `}
+                <small>produtos</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -77,7 +109,7 @@ export default function Dashboard() {
                 <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Entrada Produto</p>
-              <h3 className={classes.cardTitle}>10</h3>
+              <h3 className={classes.cardTitle}>{`${inventory}/500 `}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -91,10 +123,10 @@ export default function Dashboard() {
           <Card>
             <CardHeader color="danger" stats icon>
               <CardIcon color="danger">
-                <Store/>
+                <Store />
               </CardIcon>
               <p className={classes.cardCategory}>Saída Produto</p>
-              <h3 className={classes.cardTitle}>10</h3>
+              <h3 className={classes.cardTitle}>{`${exitProducts}/500 `}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -111,7 +143,7 @@ export default function Dashboard() {
                 <Accessibility />
               </CardIcon>
               <p className={classes.cardCategory}>Fornecedores</p>
-              <h3 className={classes.cardTitle}>2</h3>
+              <h3 className={classes.cardTitle}>{`${providers}/100 `}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -122,74 +154,7 @@ export default function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="success">
-              <ChartistGraph
-                className="ct-chart"
-                data={dailySalesChart.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Entradas Diárias</h4>
-              <p className={classes.cardCategory}>
-                Período Semanal
-              </p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="info">
-              <ChartistGraph
-                className="ct-chart"
-                data={emailsSubscriptionChart.data}
-                type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Fornecedores Diários</h4>
-              <p className={classes.cardCategory}>Período Anual</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Saídas Diárias</h4>
-              <p className={classes.cardCategory}>Últimas 24 horas</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <GridContainer></GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <CustomTabs
@@ -212,7 +177,9 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Funcionários Registrados</h4>
+              <h4 className={classes.cardTitleWhite}>
+                Funcionários Registrados
+              </h4>
               <p className={classes.cardCategoryWhite}>
                 Lista de funcionários registrados
               </p>
@@ -220,12 +187,14 @@ export default function Dashboard() {
             <CardBody>
               <Table
                 tableHeaderColor="danger"
-                tableHead={["ID", "Nome", "Registro", "Cidade"]}
-                tableData={[
-                  ["1", "Victor Ricci Martins", "1903379", "São Paulo"],
-                  ["2", "Juliana de Queiroz Andrade", "1903497", "São Paulo"],
-                  ["3", "Rafael Donizete Carrara", "1903566", "São Paulo"],
-                ]}
+                tableHead={["Nome", "Telefone", "E-mail"]}
+                tableData={fornecedor.map((fornecedor) => {
+                  return [
+                    fornecedor.name,
+                    fornecedor.cellphone,
+                    fornecedor.email,
+                  ];
+                })}
               />
             </CardBody>
           </Card>

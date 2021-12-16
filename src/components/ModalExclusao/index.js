@@ -10,7 +10,7 @@ export default function ModalExclusao({ conteudo, close }) {
         </div>
         <button
           className="buttonContinue"
-          onClick={() => addExitProducts(conteudo)}
+          onClick={async () => {await addExitProducts(conteudo); window.location.reload()}}
         >
           Continuar
         </button>
