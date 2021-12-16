@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   getAllProducts,
   registerProducts,
+  updateProducts,
 } from "../../models/products/products.js";
 import Title from "../../components/Title";
 import { FiEdit } from "react-icons/fi";
 import { getAllProviders } from "../../models/providers/providers";
 
-export default function EditProducts() {
+export default function EditProducts(props) {
   const [products, setProducts] = useState([]);
   const [fabricante, setFabricantes] = useState("");
   const [produtos, setProdutos] = useState("");
@@ -33,33 +34,31 @@ export default function EditProducts() {
     setLoadingList(false);
   }
 
-  async function updateState(snapshot) {
-    const isCollectionEmpty = snapshot.length === 0;
+  useEffect(() => {
+    ProductsList();
+  }, []);
 
-    if (!isCollectionEmpty) {
-      let lista = [];
-      snapshot.forEach((doc) => {
-        lista.push({
-          id: doc.id,
-          description: doc.description,
-          manufacturer: doc.manufacturer,
-          quantity: doc.quantity,
-          name: doc.name,
-          validationDate: doc.validationDate,
-          entryDate: doc.entryDate,
-        });
-      });
-      setProducts(lista);
-    } else {
-      setIsEmpty(true);
-    }
-    setLoading(false);
-    setLoadingMore(false);
+  async function updateState(snapshot) {
+    const { id } = props.match.params;
+    snapshot.forEach((products) => {
+      if (products.id === id) {
+        setFabricantes(products.manufacturer);
+        setProdutos(products.name);
+        setDescricao(products.description);
+        setQuantidade(products.quantity);
+        setDataEntrada(products.entryDate);
+        setDataValidade(products.validationDate)
+
+
+      }
+    });
   }
 
   async function handleRegisterProducts(event) {
+    const { id } = props.match.params;
     event.preventDefault();
-    await registerProducts(
+    await updateProducts(
+      id,
       produtos,
       fabricante,
       quantidade,
@@ -67,7 +66,8 @@ export default function EditProducts() {
       dataEntrada,
       descricao
     );
-    return ProductsList();
+    await new Promise(r => setTimeout(r, 2000));
+    return window.location.href = "/listaprodutos"
   }
 
   function handleChangeProviders(e) {

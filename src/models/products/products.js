@@ -66,3 +66,37 @@ export async function deleteProducts(id) {
       toast.error("Ops, deu algum erro.");
     });
 }
+
+export async function updateProducts(
+  id,
+  name,
+  manufacturer,
+  quantity,
+  validationDate,
+  entryDate,
+  description
+) {
+  const options = {
+    method: "PUT",
+    url: `https://estoque-api.herokuapp.com/products/${id}`,
+    headers: { "Content-Type": "application/json" },
+    data: {
+      name,
+      manufacturer,
+      quantity,
+      validationDate,
+      entryDate,
+      description,
+    },
+  };
+
+  axios
+    .request(options)
+    .then(function (response) {
+      toast.success("Produto editado com sucesso!");
+      return response.data;
+    })
+    .catch(function (error) {
+      toast.error("Ops, deu algum erro.");
+    });
+}
