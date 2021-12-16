@@ -32,6 +32,7 @@ export default function Providers() {
   async function ProvidersList() {
     const data = await getAllProviders();
     updateState(data);
+  
   }
   useEffect(() => {
     ProvidersList();
@@ -122,7 +123,7 @@ export default function Providers() {
 
           {providers.length === 0 ? (
             <div className="container dashboard">
-              <span>Buscando fornecedores...</span>
+              <span>Nenhum fornecedor cadastrado...</span>
             </div>
           ) : (
             <>

@@ -41,7 +41,7 @@ export default function Products() {
     const dataProvider = await getAllProviders();
     updateState(data);
     setProviders(dataProvider);
-    setLoadProviders(false);
+    setLoadProviders(dataProvider === "Nenhum fornecedor cadastrado." ? true : false);
     setLoadingList(false);
   }
 
