@@ -178,10 +178,10 @@ export default function Dashboard() {
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>
-                Funcionários Registrados
+                Fornecedores Registrados
               </h4>
               <p className={classes.cardCategoryWhite}>
-                Lista de funcionários registrados
+                Lista de fornecedores registrados
               </p>
             </CardHeader>
             <CardBody>
